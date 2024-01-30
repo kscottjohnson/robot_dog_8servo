@@ -38,4 +38,42 @@ void LegServo::setAngle(float ang){
 }
 
 
+class Leg {
+  public:
+    Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg);
+    LegServo* hip;
+    LegServo* knee;
+    void setDefault();
+    void setAngles(float h, float k);
+    bool isReversed();
+  private:
+    bool _reverseLeg;
+};
+
+Leg::Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg){
+  hip = hipServo;
+  knee = kneeServo;
+  _reverseLeg = reverseLeg;
+}
+
+void Leg::setDefault(){
+  this->hip->setDefault();
+  this->knee->setDefault();
+}
+
+void Leg::setAngles(float h, float k){
+  if(this->isReversed()){
+    this->hip->setAngle(270-h); 
+    this->knee->setAngle(270-k);
+  }
+  else{
+    this->hip->setAngle(h); 
+    this->knee->setAngle(k);
+  }
+}
+
+bool Leg::isReversed() {
+  return this->_reverseLeg;
+}
+
 #endif

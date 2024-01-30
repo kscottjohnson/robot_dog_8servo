@@ -19,9 +19,21 @@ LegServo servos[8] = { // 270 degrees pwm 100 to 505
   LegServo(&driver, 3, 460, 240), // Back Right Knee
 };
 
+Leg legs[4] = {
+  Leg(&servos[0], &servos[1], false), // Front Left
+  Leg(&servos[2], &servos[3], true), // Front Right
+  Leg(&servos[4], &servos[5], false), // Back Left
+  Leg(&servos[6], &servos[7], true), // Back Right
+};
+
+#define FRONT_LEFT 0
+#define FRONT_RIGHT 1
+#define BACK_LEFT 2
+#define BACK_RIGHT 3
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
+  while (!Serial) yield();
   Serial.println("Robot Dog - 8 Servo");
 
   // start servos
@@ -34,5 +46,6 @@ void setup() {
 void loop() {
   //centerServos();
   stand();
+  //lay();
   delay(500);
 }
