@@ -33,7 +33,7 @@ Leg legs[4] = {
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial) yield();
+  //while (!Serial) yield();
   Serial.println("Robot Dog - 8 Servo");
 
   // start servos
