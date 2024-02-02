@@ -9,12 +9,12 @@ void centerServos() {
 
 void stand() {
   for(uint16_t l = 0; l<4; l++){
-    legs[l].setAngles(135, 70);
+    legs[l].setAngles(135, 90); 
   }
 }
 
 void lay() {
   for(uint16_t l = 0; l<4; l++){
-    legs[l].setAngles(148, 26);
+    legs[l].setAngles(148, 30);
   }
 }

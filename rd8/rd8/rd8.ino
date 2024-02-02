@@ -10,13 +10,13 @@ Adafruit_PWMServoDriver driver = Adafruit_PWMServoDriver(0x40);
 
 LegServo servos[8] = { // 270 degrees pwm 100 to 505
   LegServo(&driver, 6, 228,  90), // Front Left Hip - 0 degrees is forward - 235
-  LegServo(&driver, 7, 126,  30), // Front Left Knee - 0 degrees is vertical - 145
+  LegServo(&driver, 7, 126,  21.9865), // Front Left Knee - 0 degrees is vertical - 145
   LegServo(&driver, 4, 363, 180), // Front Right Hip - 270 degrees is forward - 370
-  LegServo(&driver, 5, 470, 240), // Front Right Knee - 270 degrees is vertical - 460
+  LegServo(&driver, 5, 470, 248.0135), // Front Right Knee - 270 degrees is vertical - 460
   LegServo(&driver, 0, 238,  90), // Back Left Hip
-  LegServo(&driver, 1, 136,  30), // Back Left Knee
+  LegServo(&driver, 1, 136,  21.9865), // Back Left Knee
   LegServo(&driver, 2, 370, 180), // Back Right Hip
-  LegServo(&driver, 3, 460, 240), // Back Right Knee
+  LegServo(&driver, 3, 460, 248.0135), // Back Right Knee
 };
 
 Leg legs[4] = {
@@ -47,5 +47,5 @@ void loop() {
   //centerServos();
   stand();
   //lay();
-  delay(500);
+  delay(1000);
 }

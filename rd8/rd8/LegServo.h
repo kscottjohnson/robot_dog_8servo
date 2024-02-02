@@ -37,7 +37,6 @@ void LegServo::setAngle(float ang){
   this->_driver->setPWM(this->_num, 0, pwm);
 }
 
-
 class Leg {
   public:
     Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg);
@@ -61,14 +60,37 @@ void Leg::setDefault(){
   this->knee->setDefault();
 }
 
+
+float adjacentAngle(float a) {
+  // gets the adjacent angle in a specified quadrilateral with sides 24,18,18,18
+
+  return (
+    (
+      acos((648.0-648.0*cos(a*DEG_TO_RAD))/(36.0*sqrt(648.0-648.0*cos(a*DEG_TO_RAD)))) +
+      acos((396.0-648.0*cos(a*DEG_TO_RAD))/(36.0*sqrt(648.0-648.0*cos(a*DEG_TO_RAD))))
+    )
+    *RAD_TO_DEG
+  );
+}
+
 void Leg::setAngles(float h, float k){
+  //Serial.print("setting angles "); 
+  //Serial.print(h); Serial.print(" "); 
+  //Serial.println(k);
+
+  float k2 = adjacentAngle(-1 * (k + h - 315)) - 45;
+
+  //Serial.print("servo angles "); 
+  //Serial.print(h); Serial.print(" "); 
+  //Serial.println(k2);
+
   if(this->isReversed()){
     this->hip->setAngle(270-h); 
-    this->knee->setAngle(270-k);
+    this->knee->setAngle(270-k2);
   }
   else{
     this->hip->setAngle(h); 
-    this->knee->setAngle(k);
+    this->knee->setAngle(k2);
   }
 }
 
