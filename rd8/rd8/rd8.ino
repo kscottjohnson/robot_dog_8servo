@@ -46,7 +46,8 @@ void setup() {
   driver.setPWMFreq(SERVO_FREQ);
 
   delay(100);
-  centerServos();
+  //centerServos();
+  stand();
   delay(500);
 
   prevMs = millis();
@@ -58,10 +59,10 @@ void loop() {
   prevMs = currentMs;
 
   //centerServos();
-  stand();
+  //stand();
   //lay();
 
-  //moveStaticWalk();
+  moveStaticWalk();
 
   //delay(1000);
 }
