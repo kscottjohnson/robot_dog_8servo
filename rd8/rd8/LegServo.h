@@ -45,6 +45,7 @@ class Leg {
     void setDefault();
     void setAngles(float h, float k);
     bool isReversed();
+    void move(float x, float y);
   private:
     bool _reverseLeg;
 };
@@ -98,4 +99,26 @@ bool Leg::isReversed() {
   return this->_reverseLeg;
 }
 
+void Leg::move(float x, float y){
+
+  // find the lenght of the leg given the x and y measurments
+  float legLen = sqrt(x*x+y*y);
+
+  // find the knee angle using the law of cosines and the leg and femur length
+  //float kneeAngle = acos((legLen*legLen-2*FEMUR*FEMUR)/(-2*FEMUR*FEMUR))*RAD_2_DEG;
+  float kneeAngle = asin(legLen/2/FEMUR)*2*RAD_TO_DEG;
+
+  // find the first part of the hip angle using the same triangle
+  float h1 = (180 - kneeAngle) / 2;
+
+  // 2nd part of hip 
+  float h2 = 90;
+  if(x != 0){
+    h2 = acos(x/legLen)*RAD_TO_DEG;
+  }
+
+  float hipAngle = h1 + h2;
+
+  this->setAngles(hipAngle, kneeAngle);
+}
 #endif

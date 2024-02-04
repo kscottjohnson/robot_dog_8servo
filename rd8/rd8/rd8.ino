@@ -1,8 +1,13 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+
+#define FRONT_LEFT 0
+#define FRONT_RIGHT 1
+#define BACK_LEFT 2
+#define BACK_RIGHT 3
+#define FEMUR 50
+
 #include "LegServo.h"
-
-
 
 // Servos
 Adafruit_PWMServoDriver driver = Adafruit_PWMServoDriver(0x40);
@@ -26,10 +31,9 @@ Leg legs[4] = {
   Leg(&servos[6], &servos[7], true), // Back Right
 };
 
-#define FRONT_LEFT 0
-#define FRONT_RIGHT 1
-#define BACK_LEFT 2
-#define BACK_RIGHT 3
+#define CLOCK_CYCLE 50
+unsigned long currentMs;
+unsigned long prevMs;
 
 void setup() {
   Serial.begin(115200);
@@ -41,11 +45,23 @@ void setup() {
   driver.setOscillatorFrequency(25000000);
   driver.setPWMFreq(SERVO_FREQ);
 
+  delay(100);
+  centerServos();
+  delay(500);
+
+  prevMs = millis();
 }
 
 void loop() {
+  currentMs = millis();
+  if((currentMs - prevMs) < CLOCK_CYCLE) return;
+  prevMs = currentMs;
+
   //centerServos();
   stand();
   //lay();
-  delay(1000);
+
+  //moveStaticWalk();
+
+  //delay(1000);
 }
