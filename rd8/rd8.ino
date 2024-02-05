@@ -25,10 +25,10 @@ LegServo servos[8] = { // 270 degrees pwm 100 to 505
 };
 
 Leg legs[4] = {
-  Leg(&servos[0], &servos[1], false), // Front Left
-  Leg(&servos[2], &servos[3], true), // Front Right
-  Leg(&servos[4], &servos[5], false), // Back Left
-  Leg(&servos[6], &servos[7], true), // Back Right
+  Leg(&servos[0], &servos[1], false, 7), // Front Left
+  Leg(&servos[2], &servos[3], true, 3), // Front Right
+  Leg(&servos[4], &servos[5], false, 3), // Back Left
+  Leg(&servos[6], &servos[7], true, 7), // Back Right
 };
 
 #define CLOCK_CYCLE 50
@@ -47,8 +47,8 @@ void setup() {
 
   delay(100);
   //centerServos();
-  stand();
-  delay(500);
+  //stand();
+  //delay(2000);
 
   prevMs = millis();
 }
@@ -61,8 +61,9 @@ void loop() {
   //centerServos();
   //stand();
   //lay();
-
-  moveStaticWalk();
+  balanceTest();
+  //trotInPlace();
+  //moveStaticWalk();
 
   //delay(1000);
 }

@@ -7,6 +7,26 @@ void centerServos() {
   legs[BACK_RIGHT].setDefault();
 }
 
+void balanceTest() {
+  legs[FRONT_LEFT ].move( 0, 70);
+  legs[FRONT_RIGHT].move( 0, 64);
+  legs[BACK_LEFT  ].move( 0, 64);
+  legs[BACK_RIGHT ].move( 0, 70);
+}
+
+void trotInPlace(){
+  legs[FRONT_LEFT ].move( 0, 70);
+  legs[FRONT_RIGHT].move( 0, 64);
+  legs[BACK_LEFT  ].move( 0, 64);
+  legs[BACK_RIGHT ].move( 0, 70);
+  delay(1000);
+  legs[FRONT_LEFT ].move( 0, 64);
+  legs[FRONT_RIGHT].move( 0, 70);
+  legs[BACK_LEFT  ].move( 0, 70);
+  legs[BACK_RIGHT ].move( 0, 64);
+  delay(1000);
+}
+
 void stand() {
   for(uint16_t l = 0; l<4; l++){
     //legs[l].setAngles(135, 90); 
@@ -23,7 +43,7 @@ void lay() {
 
 uint8_t sTick = 0;
 uint8_t sTicksPerState = 4;
-uint8_t sWalkState = 0;
+uint8_t sWalkState = 1;
 const int8_t sWalkX[] = {-21,  0, 21, 14,  7,  0, -7,-14, -21,  0, 21, 14,  7,  0, -7,-14};
 const int8_t sWalkY[] = { 70, 60, 70, 70, 70, 70, 70, 70,  70, 60, 70, 70, 70, 70, 70, 70};
 float sCurrentX[4] = {0,0,0,0}, sCurrentY[4] = {70,70,70,70};
@@ -34,7 +54,9 @@ int8_t sDirection = 1; // 1 forward, -1 reverse
 
 void moveStaticWalk() {
 
-//moving
+  sTick = 3;
+
+  //moving
   for(uint8_t l=0; l<4; l++){
     uint8_t lState = sWalkState + legOrder[l]*2; //offset each leg through the states
   
@@ -50,6 +72,7 @@ void moveStaticWalk() {
     }
     legs[l].move(sCurrentX[l], sCurrentY[l]);
   }
+  /*
   if(++sTick == sTicksPerState){ // new state
       sTick = 0;
       sWalkState += sDirection;
@@ -60,6 +83,7 @@ void moveStaticWalk() {
         sWalkState = 7;
       }
   }
+  */
 }
 
 

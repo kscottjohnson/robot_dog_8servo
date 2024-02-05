@@ -3,20 +3,20 @@
 
 class LegServo {
   public:
-    LegServo(Adafruit_PWMServoDriver* driver, int num, int defaultPWM, 
-      int defaultAngle);
+    LegServo(Adafruit_PWMServoDriver* driver, uint8_t num, uint16_t defaultPWM, 
+      uint16_t defaultAngle);
     void setDefault();
     void setAngle(float ang);
   private:
     Adafruit_PWMServoDriver* _driver;
-    int _num;
-    int _defaultPWM;
-    int _defaultAngle;
-    void _setPWM(int pwm);
+    uint8_t _num;
+    uint16_t _defaultPWM;
+    uint16_t _defaultAngle;
+    void _setPWM(uint16_t pwm);
 };
 
-LegServo::LegServo(Adafruit_PWMServoDriver* driver, int num, int defaultPWM, 
-  int defaultAngle){
+LegServo::LegServo(Adafruit_PWMServoDriver* driver, uint8_t num, uint16_t defaultPWM, 
+  uint16_t defaultAngle){
   
   _driver = driver;
   _num = num;
@@ -24,7 +24,7 @@ LegServo::LegServo(Adafruit_PWMServoDriver* driver, int num, int defaultPWM,
   _defaultAngle = defaultAngle;
 }
 
-void LegServo::_setPWM(int pwm){
+void LegServo::_setPWM(uint16_t pwm){
   this->_driver->setPWM(this->_num, 0, pwm);
 }
 
@@ -33,13 +33,13 @@ void LegServo::setDefault(){
 }
 
 void LegServo::setAngle(float ang){
-  float pwm = (ang - this->_defaultAngle) * 1.5 + this->_defaultPWM;
+  uint16_t pwm = (ang - this->_defaultAngle) * 1.5 + this->_defaultPWM;
   this->_driver->setPWM(this->_num, 0, pwm);
 }
 
 class Leg {
   public:
-    Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg);
+    Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg, float xAdj);
     LegServo* hip;
     LegServo* knee;
     void setDefault();
@@ -48,12 +48,14 @@ class Leg {
     void move(float x, float y);
   private:
     bool _reverseLeg;
+    float _xAdj;
 };
 
-Leg::Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg){
+Leg::Leg(LegServo* hipServo, LegServo* kneeServo, bool reverseLeg, float xAdj){
   hip = hipServo;
   knee = kneeServo;
   _reverseLeg = reverseLeg;
+  _xAdj = xAdj;
 }
 
 void Leg::setDefault(){
@@ -100,6 +102,9 @@ bool Leg::isReversed() {
 }
 
 void Leg::move(float x, float y){
+
+  // adjust x for calibration
+  x += this->_xAdj;
 
   // find the lenght of the leg given the x and y measurments
   float legLen = sqrt(x*x+y*y);
