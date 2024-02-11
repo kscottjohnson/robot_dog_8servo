@@ -59,7 +59,7 @@ void loop() {
   prevMs = currentMs;
 
   if(!digitalRead(BUTTON_A)){
-    if(++mode == 2) mode = 0; // cycle mode
+    if(++mode == 3) mode = 0; // cycle mode
     while(!digitalRead(BUTTON_A)){ // pause until button released
       delay(100);
     }

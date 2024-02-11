@@ -39,6 +39,24 @@ void lay() {
   }
 }
 
+void demo() {
+
+  //map left x axis to forward/backward
+  float x = map(lx, 0, 255, -30, 30);
+  //map left y axis to hight
+  float y = map(ly, 0, 255, 30, 96);
+
+  // map right x axis to roll
+  float r = map(rx, 0, 255, -30, 30);
+  // map right u axis to pitch
+  float p = map(ry, 0, 255, -30, 30);
+
+  legs[FRONT_LEFT ].move( x, y-p+r);
+  legs[FRONT_RIGHT].move( x, y-p-r);
+  legs[BACK_LEFT  ].move( x, y+p+r);
+  legs[BACK_RIGHT ].move( x, y+p-r);
+}
+
 uint8_t sTick = 0;
 uint8_t sTicksPerState = 8;
 uint8_t sWalkState = 0;

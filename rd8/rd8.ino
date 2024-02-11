@@ -60,7 +60,7 @@ void setup() {
 
   startBleAdv();
 
-  delay(100);
+  delay(500);
 
   prevMs = millis();
 }
@@ -89,7 +89,8 @@ void loop() {
 
   //Serial.print("Mode "); Serial.print(mode);
   if(mode == 0) stand();
-  else if(mode == 1) staticWalk();
+  else if(mode == 1) demo();
+  else if(mode == 2) staticWalk();
   else stand();
 
 }

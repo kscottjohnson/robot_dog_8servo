@@ -35,13 +35,14 @@ void refreshDisplay() {
   display.print("LY: "); if(ly<10) display.print(" "); if(ly<100) display.print(" "); display.print(ly); display.print("     ");
   display.print("RY: "); if(ry<10) display.print(" "); if(ry<100) display.print(" "); display.print(ry); display.println("");
 
-  display.print("Batt "); display.print(constrain(remoteBatt, 0, 99)); display.print("% ");
-  //display.print("RBatt "); display.print(constrain(robotBatt, 0, 99)); display.println("%");
+  display.print("Batt "); display.print(constrain(remoteBatt, 0, 99)); //display.print("% ");
+  //display.print("RBatt "); display.print(constrain(robotBatt, 0, 99)); 
+  display.println("%");
 
   display.print("Mode: ");
-  if(mode == 0) display.println("Demo");
-  else if(mode == 1) display.println("Static Walk");
-  else if(mode == 2) display.println("Dynamic Walk");
+  if(mode == 0) display.println("Stand");
+  else if(mode == 1) display.println("Demo");
+  else if(mode == 2) display.println("Static Walk");
 
   display.display();
 }
