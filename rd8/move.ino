@@ -29,63 +29,56 @@ void trotInPlace(){
 
 void stand() {
   for(uint16_t l = 0; l<4; l++){
-    //legs[l].setAngles(135, 90); 
     legs[l].move(0, 70);
   }
 }
 
 void lay() {
   for(uint16_t l = 0; l<4; l++){
-    //legs[l].setAngles(148, 30);
     legs[l].move(10, 30);
   }
 }
 
 uint8_t sTick = 0;
-uint8_t sTicksPerState = 3;
+uint8_t sTicksPerState = 8;
 uint8_t sWalkState = 0;
 float sCurrentX[4] = {0,0,0,0}, sCurrentY[4] = {70,70,70,70};
 float    sPrevX[4] = {0,0,0,0},    sPrevY[4] = {70,70,70,70};
 bool sFirstStep = true;
 int8_t sDirection = 1; // 1 forward, -1 reverse
-
-// 16 states
-const int8_t sWalkX4[4][16] = {
-  {-21,  0, 21, 18, 15, 12,  9,  6,  3,  0, -3, -6, -9,-12,-15,-18}, //1
-  {  3,  0, -3, -6, -9,-12,-15,-18,-21,  0, 21, 18, 15, 12,  9,  6}, //3
-  { 15, 12,  9,  6,  3,  0, -3, -6, -9,-12,-15,-18,-21,  0, 21, 18}, //4
-  { -9,-12,-15,-18,-21,  0, 21, 18, 15, 12,  9,  6,  3,  0, -3, -6}  //2
+uint8_t sLegSpeed = 3; 
+uint8_t sWalkStyle = 1; // 0 - walk, 1 - trot
+const uint8_t sLegStateOffset[2][4] = { 
+  {0,2,1,3}, // walk
+  {0,2,2,0}  // trot
+};
+const int8_t sWalkX[32] = { // pattern repeats to make the offsets loop
+  -7, 0, 7, 6, 5, 4, 3, 2, 1, 0,-1,-2,-3,-4,-5,-6,
+  -7, 0, 7, 6, 5, 4, 3, 2, 1, 0,-1,-2,-3,-4,-5,-6
+};
+const int8_t sWalkY[32] = {
+  70,45,70,70,70,70,70,70,70,70,70,70,70,70,70,70,
+  70,45,70,70,70,70,70,70,70,70,70,70,70,70,70,70
 };
 
-const int8_t sWalkY4[4][16] = {
-  { 70, 60, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70},
-  { 70, 70, 70, 70, 70, 70, 70, 70, 70, 60, 70, 70, 70, 70, 70, 70},
-  { 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 60, 70, 70},
-  { 70, 70, 70, 70, 70, 60, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70}
-};
-
-void staticWalk4() { // defines individual static movement for each leg
-
-  //sTick = 3;
-  //sWalkState = 7;
+void staticWalk() { // defines individual static movement for each leg
 
   //moving
   for(uint8_t l=0; l<4; l++){
-    
+    uint8_t legState = sWalkState + 4 * sLegStateOffset[sWalkStyle][l];
     if(sTick + 1 == sTicksPerState){ // if this is the last tick just set the targets
-      sCurrentX[l] = sWalkX4[l][sWalkState];
-      sCurrentY[l] = sWalkY4[l][sWalkState];
+      sCurrentX[l] = sWalkX[legState]*sLegSpeed;
+      sCurrentY[l] = sWalkY[legState];
       sPrevX[l] = sCurrentX[l];
       sPrevY[l] = sCurrentY[l];
     }
     else{
-      sCurrentX[l] += (sWalkX4[l][sWalkState] - sPrevX[l]) / sTicksPerState;
-      sCurrentY[l] += (sWalkY4[l][sWalkState] - sPrevY[l]) / sTicksPerState;
+      sCurrentX[l] += (sWalkX[legState]*sLegSpeed - sPrevX[l]) / sTicksPerState;
+      sCurrentY[l] += (sWalkY[legState] - sPrevY[l]) / sTicksPerState;
     }
     legs[l].move(sCurrentX[l], sCurrentY[l]);
   }
   
-  ///*
   if(++sTick == sTicksPerState){ // new state
       sTick = 0;
       sWalkState += sDirection;
@@ -96,7 +89,7 @@ void staticWalk4() { // defines individual static movement for each leg
         sWalkState = 15;
       }
   }
-  //*/
+
 }
 
 
