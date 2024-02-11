@@ -11,7 +11,6 @@
 
 // Servos
 Adafruit_PWMServoDriver driver = Adafruit_PWMServoDriver(0x40);
-#define SERVO_FREQ 50
 
 LegServo servos[8] = { // 270 degrees pwm 100 to 505
   LegServo(&driver, 6, 228,  90), // Front Left Hip - 0 degrees is forward - 235
@@ -25,13 +24,13 @@ LegServo servos[8] = { // 270 degrees pwm 100 to 505
 };
 
 Leg legs[4] = {
-  Leg(&servos[0], &servos[1], false, 7), // Front Left
-  Leg(&servos[2], &servos[3], true, 3), // Front Right
-  Leg(&servos[4], &servos[5], false, 3), // Back Left
-  Leg(&servos[6], &servos[7], true, 7), // Back Right
+  Leg(&servos[0], &servos[1], false, 2), // Front Left
+  Leg(&servos[2], &servos[3], true,  2), // Front Right
+  Leg(&servos[4], &servos[5], false, 2), // Back Left
+  Leg(&servos[6], &servos[7], true,  2), // Back Right
 };
 
-#define CLOCK_CYCLE 50
+#define CLOCK_CYCLE 20
 unsigned long currentMs;
 unsigned long prevMs;
 
@@ -43,12 +42,12 @@ void setup() {
   // start servos
   driver.begin();
   driver.setOscillatorFrequency(25000000);
-  driver.setPWMFreq(SERVO_FREQ);
+  driver.setPWMFreq(50);
 
   delay(100);
   //centerServos();
-  //stand();
-  //delay(2000);
+  stand();
+  delay(1000);
 
   prevMs = millis();
 }
@@ -61,9 +60,9 @@ void loop() {
   //centerServos();
   //stand();
   //lay();
-  balanceTest();
+  //balanceTest();
   //trotInPlace();
-  //moveStaticWalk();
+  staticWalk4();
 
   //delay(1000);
 }
